@@ -85,7 +85,7 @@ class ManufacturerDataScanFilter {
 
   ManufacturerDataFilter toMfdFilter() {
     return ManufacturerDataFilter(
-      companyIdentifier: companyIdentifier,
+      companyIdentifier: companyIdentifier!,
       // DataPrefix and mask not added yet
       // UniversalBle supports complete data
     );

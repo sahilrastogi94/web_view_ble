@@ -28,7 +28,7 @@ class BleManager {
       }
     };
 
-    UniversalBle.onConnectionChange = (String deviceId, bool isConnected, String error) async {
+    UniversalBle.onConnectionChange = (String deviceId, bool isConnected, String? error) async {
       _connectionStreamController?.add((deviceId, isConnected));
       DartToJs.updateConnectionStatus(
         deviceId: deviceId,
