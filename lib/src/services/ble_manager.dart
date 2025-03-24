@@ -8,7 +8,7 @@ import 'package:web_view_ble/src/models/web_ble_device.dart';
 import 'package:web_view_ble/src/services/dart_to_js.dart';
 import 'package:web_view_ble/src/widgets/scan_dialog.dart';
 import 'package:web_view_ble/src/services/logger.dart';
-import 'dart:math'
+import 'dart:math';
 
 /// Manage all ble related tasks
 class BleManager {
@@ -28,7 +28,7 @@ class BleManager {
       }
     };
 
-    UniversalBle.onConnectionChange = (String deviceId, bool isConnected, error) async {
+    UniversalBle.onConnectionChange = (String deviceId, bool isConnected, String error) async {
       _connectionStreamController?.add((deviceId, isConnected));
       DartToJs.updateConnectionStatus(
         deviceId: deviceId,
