@@ -35,6 +35,10 @@ class BleManager {
       );
       if (!isConnected) {
         _servicesCache.remove(deviceId);
+      } else {
+        var mtu = await UniversalBle.requestMtu(deviceId, 500);
+        mtu = min(mtu, 500);
+        DartToJs.controller?.evaluateJavascript(source: "window.mtu = $mtu");
       }
     };
 
