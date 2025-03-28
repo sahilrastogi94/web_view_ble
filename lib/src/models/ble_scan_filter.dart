@@ -1,5 +1,6 @@
 import 'package:universal_ble/universal_ble.dart';
 import 'package:web_view_ble/src/services/logger.dart';
+import 'dart:typed_data';
 
 class BleScanFilter {
   bool acceptAllDevices = false;
@@ -37,7 +38,7 @@ class BleScanFilter {
               namePrefix.add(filterData);
             }
             break;
-          // manufacturerData -> companyIdentifier, dataPrefix, mask
+          // manufacturerData -> companyIdentifier, payloadPrefix, payloadMask
           case 'manufacturerData':
             if (filterData is List) {
               for (Map<String, dynamic> mfd in filterData) {
@@ -64,18 +65,18 @@ class BleScanFilter {
 
 class ManufacturerDataScanFilter {
   int? companyIdentifier;
-  Map? dataPrefix;
-  Map? mask;
+  Uint8List? payloadPrefix;
+  Uint8List? payloadMask;
 
   ManufacturerDataScanFilter(
-      this.companyIdentifier, this.dataPrefix, this.mask);
+      this.companyIdentifier, this.payloadPrefix, this.payloadMask);
 
   factory ManufacturerDataScanFilter.fromJson(Map<String, dynamic>? data) {
     try {
       return ManufacturerDataScanFilter(
         data?['companyIdentifier'],
-        data?['dataPrefix'],
-        data?['mask'],
+        Uint8List.fromList([data?['dataPrefix']['0'], data?['dataPrefix']['1']]),
+        data?['payloadMask'],
       );
     } catch (e) {
       logError('ManufacturerDataScanFilter: $e');
@@ -86,13 +87,13 @@ class ManufacturerDataScanFilter {
   ManufacturerDataFilter toMfdFilter() {
     return ManufacturerDataFilter(
       companyIdentifier: companyIdentifier!,
-      // DataPrefix and mask not added yet
-      // UniversalBle supports complete data
+      payloadPrefix: payloadPrefix,
+      payloadMask: payloadMask
     );
   }
 
   @override
   String toString() {
-    return 'ManufacturerDataScanFilter(companyIdentifier: $companyIdentifier, dataPrefix: $dataPrefix, mask: $mask)';
+    return 'ManufacturerDataScanFilter(companyIdentifier: $companyIdentifier, payloadPrefix: $payloadPrefix, payloadMask: $payloadMask)';
   }
 }
